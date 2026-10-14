@@ -14,7 +14,7 @@ services:
       - key: PORT
         value: 10000
       - key: DATABASE_URL
-        sync: false # Paste your Supabase connection string here in Render Dashboard
+        sync: false # Set in Render Dashboard with your Supabase connection string
       - key: RAZORPAY_KEY_ID
         sync: false
       - key: RAZORPAY_KEY_SECRET
@@ -23,12 +23,11 @@ services:
         sync: false
 
   # 2. Frontend Client Web App (Static Site)
-  - type: static
+  - type: web
     name: prana-yoga-web
-    plan: free
-    region: singapore
+    runtime: static
     buildCommand: npm install && npm run build
-    staticPublishPath: dist
+    staticPublishPath: ./dist
     routes:
       - type: rewrite
         source: /*
