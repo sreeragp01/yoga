@@ -3,7 +3,12 @@
  * Seamlessly interfaces with backend REST API and WebSocket Stream.
  */
 
-const RAW_API_URL = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+const RAW_ENV = (import.meta.env.VITE_API_URL || '').trim().replace(/\/$/, '');
+const RAW_API_URL = RAW_ENV
+  ? RAW_ENV.startsWith('http://') || RAW_ENV.startsWith('https://')
+    ? RAW_ENV
+    : `https://${RAW_ENV}`
+  : '';
 const API_BASE = RAW_API_URL ? `${RAW_API_URL}/api` : '/api';
 
 export interface HoldSlotResponse {
