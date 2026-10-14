@@ -1,7 +1,7 @@
 services:
   # 1. Backend REST API & WebSocket Gateway (Node.js Service)
   - type: web
-    name: prana-yoga-api
+    name: yoga-api-sreerag01
     runtime: node
     plan: free
     region: singapore
@@ -24,7 +24,7 @@ services:
 
   # 2. Frontend Client Web App (Static Site)
   - type: web
-    name: prana-yoga-web
+    name: yoga-web-sreerag01
     runtime: static
     buildCommand: npm install --include=dev && npm run build
     staticPublishPath: ./dist
