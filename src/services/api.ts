@@ -3,7 +3,8 @@
  * Seamlessly interfaces with backend REST API and WebSocket Stream.
  */
 
-const API_BASE = '/api';
+const RAW_API_URL = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+const API_BASE = RAW_API_URL ? `${RAW_API_URL}/api` : '/api';
 
 export interface HoldSlotResponse {
   success: boolean;
@@ -166,8 +167,15 @@ export const api = {
 
   // Live WebSocket Connection
   connectWebSocket(onEvent: (event: any) => void): () => void {
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const wsUrl = `${protocol}//${window.location.host}/ws`;
+    let wsUrl = '';
+    if (RAW_API_URL) {
+      const isHttps = RAW_API_URL.startsWith('https://');
+      const host = RAW_API_URL.replace(/^https?:\/\//, '');
+      wsUrl = `${isHttps ? 'wss:' : 'ws:'}//${host}/ws`;
+    } else {
+      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      wsUrl = `${protocol}//${window.location.host}/ws`;
+    }
 
     let ws: WebSocket | null = null;
     let shouldReconnect = true;
